@@ -45,7 +45,7 @@ function PageView({ content, year }: { content: PublicContentShape; year: number
       </div>
 
       {page.headline ? (
-        <p className="text-[22px] leading-[1.2] font-normal tracking-[0.05em] text-balance text-white sm:text-[30px]">
+        <p className="text-[22px] leading-[1.2] font-bold tracking-[0.05em] text-balance text-white sm:text-[30px]">
           {page.headline}
         </p>
       ) : null}

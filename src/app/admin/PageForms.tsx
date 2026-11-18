@@ -17,7 +17,7 @@ export function TextsForm({ initial }: { initial: PageData }) {
       <FormAlert error={state.error} ok={state.ok ? "Textos salvos. A página já foi atualizada." : null} />
 
       <div className="rounded-3xl bg-sunset px-4 py-5 text-center">
-        <p className="text-[22px] leading-[1.2] font-normal tracking-[0.05em] text-balance text-white">{v.headline}</p>
+        <p className="text-[22px] leading-[1.2] font-bold tracking-[0.05em] text-balance text-white">{v.headline}</p>
       </div>
 
       <Field id="headline" label="Texto de cima" count={v.headline.length} max={LIMITS.headline} error={err.headline}>

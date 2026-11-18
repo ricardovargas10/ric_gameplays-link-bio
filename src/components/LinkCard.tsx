@@ -57,7 +57,7 @@ export function LinkCard({ id, label, subtitle, badge, url, icon, style, colors 
     inner = (
       <>
         {ring}
-        <span className={`promo-body items-stretch! overflow-hidden rounded-[14px] text-left ${s.body}`} style={bodyStyle}>
+        <span className={`promo-body items-stretch! overflow-hidden rounded-[14px] text-left shadow-[0_8px_24px_rgba(0,0,0,0.25)] ${s.body}`} style={bodyStyle}>
           {shine ? <span aria-hidden className={`promo-shine ${s.shine}`} /> : null}
           {thumb ? (
             // eslint-disable-next-line @next/next/no-img-element
