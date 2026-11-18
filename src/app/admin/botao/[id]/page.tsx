@@ -53,6 +53,9 @@ export default async function ButtonEditPage({ params }: PageProps<"/admin/botao
       };
 
   return (
-    <ButtonForm base={base} title={b ? "Editar botão" : "Novo botão"} initial={initial} maxPosition={isNew ? list.length + 1 : list.length} />
+    // Uma caixa só por página: sem ela, telas abertas antes continuam aparecendo embaixo.
+    <div>
+      <ButtonForm base={base} title={b ? "Editar botão" : "Novo botão"} initial={initial} maxPosition={isNew ? list.length + 1 : list.length} />
+    </div>
   );
 }
