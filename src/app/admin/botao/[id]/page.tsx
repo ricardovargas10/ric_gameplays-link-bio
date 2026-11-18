@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireAdminPage } from "@/lib/session";
 import { readButtons } from "@/lib/content";
@@ -26,6 +25,8 @@ export default async function ButtonEditPage({ params }: PageProps<"/admin/botao
         style: b.style,
         colors: b.colors,
         gapBefore: b.gapBefore,
+        groupTitle: b.groupTitle ?? "",
+        half: b.half,
         animation: b.animation,
         badge: b.badge ?? "",
         visible: b.visible,
@@ -41,6 +42,8 @@ export default async function ButtonEditPage({ params }: PageProps<"/admin/botao
         style: "white",
         colors: { bg: null, text: null, icon: null },
         gapBefore: false,
+        groupTitle: "",
+        half: false,
         animation: "none",
         badge: "",
         visible: true,
@@ -50,12 +53,6 @@ export default async function ButtonEditPage({ params }: PageProps<"/admin/botao
       };
 
   return (
-    <div>
-      <Link href={base} className="text-[15px] font-semibold underline underline-offset-4">
-        ← Voltar para os botões
-      </Link>
-      <h1 className="mt-4 text-[28px] leading-tight font-semibold">{b ? "Editar botão" : "Novo botão"}</h1>
-      <ButtonForm base={base} initial={initial} maxPosition={isNew ? list.length + 1 : list.length} />
-    </div>
+    <ButtonForm base={base} title={b ? "Editar botão" : "Novo botão"} initial={initial} maxPosition={isNew ? list.length + 1 : list.length} />
   );
 }

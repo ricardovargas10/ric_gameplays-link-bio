@@ -8,6 +8,21 @@
   --color-cream: #fcf6ec;
   --color-lilac: #8b7cf6;
   --color-lilac-light: #d9ccff;
+  --color-admin-bg: #f7f4f2;
+  --color-admin-surface: #ffffff;
+  --color-admin-line: #ece6e7;
+  --color-admin-border: #d9d0d2;
+  --color-admin-muted: #6b5f6b;
+  --color-admin-faint: #8a7d8a;
+  --color-danger: #b3261e;
+  --color-danger-bg: #fdecea;
+  --color-danger-line: #f3cfcb;
+  --color-success: #1d7a46;
+  --color-success-bg: #e6f4ea;
+  --color-success-text: #15603a;
+  --color-warning: #8a5800;
+  --color-warning-bg: #fdf0d5;
+  --color-warning-text: #7a4e00;
   --font-sans: "neue-haas-grotesk-display", "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -18,15 +33,34 @@ html {
 }
 
 body {
-  letter-spacing: 0.05em;
   background-color: var(--color-shell);
 }
 
-/* Foco visível para teclado */
+/* Foco visível para teclado: anel duplo, aparece sobre o vermelho e sobre o branco. */
 :focus-visible {
-  outline: 3px solid #ffffff;
-  outline-offset: 3px;
+  outline: none;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px #291d29;
 }
+
+/* ---------- Botões da página pública ---------- */
+.lk {
+  box-shadow: 0 4px 14px rgba(28, 8, 14, 0.18);
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+.lk-half { box-shadow: 0 3px 10px rgba(28, 8, 14, 0.16); }
+.lk-featured { box-shadow: 0 12px 28px rgba(28, 8, 14, 0.32); }
+a.lk:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(28, 8, 14, 0.34);
+}
+a.lk:hover .lk-chip { background-color: rgba(196, 26, 59, 0.18); }
+a.lk:hover .lk-arrow { color: #c41a3b; }
+a.lk:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px rgba(28, 8, 14, 0.22);
+}
+a.lk.lk-plain:active { background-color: #f6eeef; }
+a.lk:focus-visible { box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px #291d29; }
 
 /* ---------- Botão de promoção ---------- */
 .promo {
@@ -77,7 +111,7 @@ body {
 .promo-ring {
   position: absolute;
   inset: 0;
-  border-radius: 22px;
+  border-radius: inherit;
   border-width: 3px;
   border-style: solid;
   pointer-events: none;
@@ -100,8 +134,13 @@ body {
     animation: none;
     display: none;
   }
-  .promo {
+  .promo,
+  .lk {
     transition: none;
+  }
+  a.lk:hover,
+  a.lk:active {
+    transform: none;
   }
   .promo:hover,
   .promo:active {

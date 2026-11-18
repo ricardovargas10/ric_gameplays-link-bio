@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ArrowUpRight } from "lucide-react";
 import { ADMIN_PATH } from "@/lib/admin-path";
 
 // "sub" é o caminho depois do endereço do painel (no servidor ele aparece como /admin/...).
@@ -18,13 +19,30 @@ function subPath(path: string): string {
   return path;
 }
 
-/** Abas do painel (não aparecem na tela de login). */
+/** Barra do painel: marca, "Ver página", Sair e as abas. Some no login e nas telas de edição. */
 export function AdminNav({ logout }: { logout: () => Promise<void> }) {
   const sub = subPath(usePathname());
-  if (sub.startsWith("/login")) return null;
+  if (sub.startsWith("/login") || sub.startsWith("/botao/") || sub.startsWith("/rede/")) return null;
   return (
-    <div className="mb-6 flex items-center justify-between gap-3">
-      <nav aria-label="Seções do painel" className="flex gap-1 rounded-full bg-raisin/[0.06] p-1">
+    <header className="border-b border-[#e9e2e4] bg-white">
+      <div className="mx-auto flex w-full max-w-xl items-center justify-between gap-3 px-4 pt-3">
+        <div className="flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/icon.png" alt="" className="size-7 rounded-lg" />
+          <span className="text-[15px] font-semibold">Link na bio</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <a href="/" target="_blank" rel="noopener" className="inline-flex min-h-11 items-center gap-1 rounded-xl px-2.5 text-[14.5px] font-semibold hover:bg-raisin/5">
+            Ver página <ArrowUpRight className="size-4" aria-hidden />
+          </a>
+          <form action={logout}>
+            <button type="submit" className="min-h-11 rounded-xl px-2.5 text-[14.5px] font-medium text-admin-muted hover:bg-raisin/5">
+              Sair
+            </button>
+          </form>
+        </div>
+      </div>
+      <nav aria-label="Seções do painel" className="mx-auto flex w-full max-w-xl gap-5 px-4">
         {TABS.map((t) => {
           const active = t.match(sub);
           return (
@@ -32,18 +50,13 @@ export function AdminNav({ logout }: { logout: () => Promise<void> }) {
               key={t.href}
               href={t.href}
               aria-current={active ? "page" : undefined}
-              className={`flex min-h-10 items-center rounded-full px-4 text-[15px] font-semibold ${active ? "bg-raisin text-white" : "text-raisin"}`}
+              className={`flex min-h-11 items-center text-[15px] ${active ? "font-semibold text-raisin shadow-[inset_0_-3px_0_#c41a3b]" : "font-medium text-admin-muted"}`}
             >
               {t.label}
             </Link>
           );
         })}
       </nav>
-      <form action={logout}>
-        <button type="submit" className="min-h-10 rounded-full px-3 text-[15px] font-semibold underline underline-offset-4">
-          Sair
-        </button>
-      </form>
-    </div>
+    </header>
   );
 }

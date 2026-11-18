@@ -210,6 +210,8 @@ export async function saveButtonAction(_prev: FormState, fd: FormData): Promise<
     badge: text(fd, "badge"),
     visible: fd.get("visible") === "on",
     gapBefore: fd.get("gapBefore") === "on",
+    groupTitle: text(fd, "groupTitle"),
+    half: fd.get("half") === "on",
     startsAt: startsAt ?? null,
     endsAt: endsAt ?? null,
     position: Number.parseInt(text(fd, "position"), 10) || 1000,
@@ -284,6 +286,12 @@ export async function reorderButtonsAction(ids: string[]): Promise<void> {
     const pos = new Map(order.map((id, i) => [id, i]));
     return [...list].sort((a, b) => (pos.get(a.id) ?? 1e6) - (pos.get(b.id) ?? 1e6));
   });
+}
+
+/** Excluir de dentro do formulário e voltar para a lista. */
+export async function deleteButtonAndBackAction(id: string): Promise<void> {
+  await deleteButtonAction(id);
+  redirect(adminBase());
 }
 
 export async function duplicateButtonAction(id: string): Promise<void> {

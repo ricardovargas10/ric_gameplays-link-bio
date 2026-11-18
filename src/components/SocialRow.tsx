@@ -16,9 +16,9 @@ export function SocialRow({ socials }: { socials: SocialData[] }) {
               data-track={s.id}
               aria-label={s.label}
               title={s.label}
-              className="flex size-11 items-center justify-center rounded-full text-white transition-[transform,color] duration-150 hover:-translate-y-0.5 hover:text-white/75"
+              className="flex size-11 items-center justify-center rounded-xl text-white transition-opacity duration-150 hover:opacity-75"
             >
-              <BrandIcon icon={s.icon} className="size-[26px]" />
+              <BrandIcon icon={s.icon} className="size-[23px]" />
             </a>
           </li>
         ))}

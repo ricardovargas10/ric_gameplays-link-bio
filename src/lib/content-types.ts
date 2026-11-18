@@ -69,10 +69,10 @@ export const BUTTON_STYLES = ["white", "orange", "blue", "lilac", "purple", "fea
 export type ButtonStyle = (typeof BUTTON_STYLES)[number];
 export const STYLE_LABELS: Record<ButtonStyle, string> = {
   white: "Branco",
-  orange: "Laranja",
+  orange: "Vermelho",
   blue: "Azul",
   lilac: "Lilás",
-  purple: "Roxo",
+  purple: "Grafite",
   featured: "Destaque com thumb",
 };
 
@@ -85,7 +85,7 @@ export const ANIMATION_LABELS: Record<Animation, string> = {
   both: "Brilho + pulso",
 };
 
-export const LIMITS = { label: 60, subtitle: 80, badge: 16, headline: 140, highlight: 60, aboutTitle: 60, aboutText: 600, footer: 80, socialLabel: 40 } as const;
+export const LIMITS = { label: 60, subtitle: 80, badge: 16, headline: 140, highlight: 60, aboutTitle: 60, aboutText: 600, footer: 80, socialLabel: 40, groupTitle: 24 } as const;
 
 const hexColor = z.string().regex(/^#[0-9a-f]{6}$/i);
 export const colorsSchema = z.object({
@@ -106,6 +106,10 @@ export const buttonSchema = z.object({
   colors: colorsSchema.default(NO_COLORS),
   /** Começa um novo bloco: espaço maior acima deste botão. */
   gapBefore: z.boolean().default(false),
+  /** Título do grupo que começa neste botão. Só é usado quando gapBefore = true. */
+  groupTitle: z.string().max(24).nullable().default(null),
+  /** Ocupa metade da largura e divide a linha com o próximo botão também em meia largura. */
+  half: z.boolean().default(false),
   animation: z.enum(ANIMATIONS),
   badge: z.string().max(LIMITS.badge).nullable(),
   visible: z.boolean(),
@@ -136,6 +140,8 @@ export const buttonInputSchema = z
     style: z.enum(BUTTON_STYLES, { error: "Escolha um estilo." }),
     colors: colorsSchema,
     gapBefore: z.boolean(),
+    groupTitle: optionalText(24, "O título do grupo").default(null),
+    half: z.boolean().default(false),
     animation: z.enum(ANIMATIONS, { error: "Escolha a animação." }),
     badge: optionalText(LIMITS.badge, "O selo"),
     visible: z.boolean(),
@@ -228,7 +234,6 @@ export function renderFooter(footer: string, year: number): string {
 
 // ---------- Valores iniciais ----------
 
-const WHATSAPP_MESSAGE = "Olá! Vim pelo link da bio do Ric Gameplays.";
 const T0 = "2026-11-11T00:00:00.000Z";
 
 export const DEFAULT_PAGE: PageData = {
@@ -241,20 +246,21 @@ export const DEFAULT_PAGE: PageData = {
   footer: "@ric_gameplays · {ano}",
 };
 
-const base = { subtitle: null, style: "white", colors: NO_COLORS, gapBefore: false, animation: "none", badge: null, visible: true, startsAt: null, endsAt: null, createdAt: T0, updatedAt: T0 } as const;
+const base = { subtitle: null, style: "white", colors: NO_COLORS, gapBefore: false, groupTitle: null, half: false, animation: "none", badge: null, visible: true, startsAt: null, endsAt: null, createdAt: T0, updatedAt: T0 } as const;
 
-export function defaultButtons(formUrl = "https://www.google.com"): LinkButtonData[] {
+export function defaultButtons(_formUrl?: string): LinkButtonData[] {
+  void _formUrl;
+  const b = (id: string, label: string, url: string, icon: IconRef, extra: Partial<LinkButtonData> = {}): LinkButtonData => ({ ...base, id, label, url, icon, ...extra });
+  const yt = { type: "lib", name: "youtube" } as const;
   return [
-    { ...base, id: "padrao-formulario", label: "Preencha o formulário de interesse", url: formUrl, icon: { type: "lib", name: "formulario" } },
-    {
-      ...base,
-      id: "padrao-whatsapp",
-      label: "Chamar no WhatsApp",
-      url: `https://wa.me/5511915467152?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`,
-      icon: { type: "lib", name: "whatsapp" },
-    },
-    { ...base, id: "padrao-email", label: "Canal no YouTube", url: "https://www.youtube.com/@ric_gameplays", icon: { type: "lib", name: "youtube" } },
-    { ...base, id: "padrao-instagram", label: "Siga no Instagram", url: "https://www.instagram.com/ric_gameplays/", icon: { type: "lib", name: "instagram" } },
+    b("padrao-video", "Assista meu último vídeo", "https://www.youtube.com/@ric_gameplays", { type: "none" }, { style: "featured", subtitle: "Bah City · no canal de vlogs", badge: "Novo" }),
+    b("padrao-twitch", "Twitch", "https://www.twitch.tv/ric_gameplays", { type: "lib", name: "twitch" }, { subtitle: "A live acontece aqui", gapBefore: true, groupTitle: "Ao vivo" }),
+    b("padrao-lives", "Canal de Lives", "https://www.youtube.com/@ric_gameplays", yt, { subtitle: "As lives completas, depois que acabam" }),
+    b("padrao-gameplays", "Canal de Gameplays", "https://www.youtube.com/@ric_gameplays", yt, { subtitle: "Séries de jogos, episódio por episódio", gapBefore: true, groupTitle: "Vídeos" }),
+    b("padrao-vlogs", "Canal de Vlogs", "https://www.youtube.com/@ric_gameplays", yt, { subtitle: "Vida, trabalho, rotina e bastidor" }),
+    b("padrao-discord", "Discord", "https://discord.com", { type: "lib", name: "discord" }, { half: true, gapBefore: true, groupTitle: "Comunidade" }),
+    b("padrao-playlist", "Playlist", "https://open.spotify.com", { type: "lib", name: "spotify" }, { half: true }),
+    b("padrao-aviso", "Live todo dia às 19h", "", { type: "lib", name: "calendario" }, { gapBefore: true }),
   ];
 }
 
@@ -269,28 +275,14 @@ export type PublicContentShape = {
   socials: SocialData[];
 };
 
-/**
- * Blocos invisíveis da página (com mais espaço entre eles):
- * thumbnail → com animação → com link → sem link. Dentro de cada bloco vale a ordem do painel.
- */
-export function buttonGroup(b: Pick<LinkButtonData, "style" | "animation" | "url">): number {
-  if (b.style === "featured") return 0;
-  if (b.animation !== "none") return 1;
-  if (b.url) return 2;
-  return 3;
-}
-export const GROUP_LABELS = ["Botões com thumbnail", "Botões com animação", "Botões com link", "Botões sem link"] as const;
-
-export function groupButtons<T extends Pick<LinkButtonData, "style" | "animation" | "url" | "gapBefore">>(list: T[]): T[][] {
-  const groups: T[][] = [[], [], [], []];
-  for (const b of list) groups[buttonGroup(b)].push(b);
-  // Dentro de cada bloco, "Espaço acima" abre um bloco novo.
-  const out: T[][] = [];
-  for (const g of groups) {
-    for (const b of g) {
-      if (out.length === 0 || b === g[0] || b.gapBefore) out.push([b]);
-      else out[out.length - 1].push(b);
-    }
+/** Quebra a lista em grupos só onde "Começa um grupo aqui" está ligado, mantendo a ordem do painel. */
+export function groupButtons<T extends Pick<LinkButtonData, "gapBefore" | "groupTitle">>(
+  list: T[],
+): { title: string | null; items: T[] }[] {
+  const out: { title: string | null; items: T[] }[] = [];
+  for (const b of list) {
+    if (out.length === 0 || b.gapBefore) out.push({ title: b.gapBefore ? (b.groupTitle ?? null) : null, items: [b] });
+    else out[out.length - 1].items.push(b);
   }
   return out;
 }

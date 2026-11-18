@@ -3,21 +3,17 @@
 import { useActionState } from "react";
 import { loginAction, type LoginState } from "../actions";
 import { SubmitButton } from "../ui";
+import { Alert, inputClass as input } from "../fields";
+import { btnPrimary } from "../styles";
 
-const input =
-  "mt-1.5 block w-full min-h-12 rounded-2xl border-2 border-raisin/25 bg-white px-4 text-[16px] outline-none focus:border-raisin";
 
 export function LoginForm() {
   const [state, formAction] = useActionState<LoginState, FormData>(loginAction, {});
 
   return (
-    <form action={formAction} className="mt-8 flex flex-col gap-5" noValidate>
-      {state.error ? (
-        <p role="alert" className="rounded-2xl bg-raisin/10 px-4 py-3 text-[15px] font-semibold">
-          {state.error}
-        </p>
-      ) : null}
-      <label className="block text-[15px] font-semibold">
+    <form action={formAction} className="mt-5 flex flex-col gap-4" noValidate>
+      {state.error ? <Alert kind="error">{state.error}</Alert> : null}
+      <label className="block text-[14.5px] font-semibold">
         Usuário
         <input
           name="username"
@@ -29,7 +25,7 @@ export function LoginForm() {
           className={input}
         />
       </label>
-      <label className="block text-[15px] font-semibold">
+      <label className="block text-[14.5px] font-semibold">
         Senha
         <input
           name="password"
@@ -42,7 +38,7 @@ export function LoginForm() {
       </label>
       <SubmitButton
         pendingText="Entrando…"
-        className="mt-2 min-h-14 rounded-[20px] bg-raisin text-[17px] font-semibold text-white disabled:opacity-70"
+        className={`${btnPrimary} mt-1 w-full`}
       >
         Entrar
       </SubmitButton>

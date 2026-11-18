@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 /** Cores prontas (prefabs). */
 const PRESETS = [
@@ -31,32 +31,37 @@ export function parseColor(raw: string): string | null {
 
 /** Cor do botão: prontas, roda de cores e campo para hexadecimal ou RGB. Vazio = cor do estilo. */
 export function ColorField({
-  name,
+  name = "",
   label,
   value,
   onChange,
 }: {
-  name: string;
+  name?: string;
   label: string;
   value: string | null;
   onChange: (hex: string | null) => void;
 }) {
   const [typed, setTyped] = useState(value ?? "");
-  useEffect(() => setTyped(value ?? ""), [value]);
+  // Quando a cor muda por fora (amostra ou roda), o campo de texto acompanha.
+  const [seen, setSeen] = useState(value);
+  if (seen !== value) {
+    setSeen(value);
+    if (parseColor(typed) !== value) setTyped(value ?? "");
+  }
   const invalid = typed.trim() !== "" && !parseColor(typed);
 
   return (
     <fieldset>
-      <legend className="text-[15px] font-semibold">{label}</legend>
-      <input type="hidden" name={name} value={value ?? ""} />
-      <div className="mt-2 flex flex-wrap items-center gap-2">
+      <legend className="sr-only">{label}</legend>
+      {name ? <input type="hidden" name={name} value={value ?? ""} /> : null}
+      <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
           onClick={() => onChange(null)}
           aria-pressed={value === null}
           className={`min-h-10 rounded-full border-2 px-3 text-[13px] font-semibold ${value === null ? "border-raisin" : "border-raisin/15"}`}
         >
-          Padrão
+          Do estilo
         </button>
         {PRESETS.map((p) => (
           <button
@@ -88,10 +93,10 @@ export function ColorField({
             if (hex) onChange(hex);
             else if (e.target.value.trim() === "") onChange(null);
           }}
-          className="block min-h-10 w-full rounded-xl border-2 border-raisin/25 bg-white px-3 text-[15px] outline-none focus:border-raisin"
+          className="block min-h-11 w-full rounded-xl border-[1.5px] border-admin-border bg-white px-3 text-[16px] outline-none focus:border-raisin focus:shadow-[0_0_0_3px_rgba(41,29,41,0.16)]"
         />
       </div>
-      {invalid ? <p className="mt-1 text-[13px] font-semibold text-[#B3261E]">Use #RRGGBB ou rgb(r, g, b).</p> : null}
+      {invalid ? <p className="mt-1 text-[13px] font-semibold text-danger">Use #RRGGBB ou rgb(r, g, b).</p> : null}
     </fieldset>
   );
 }
