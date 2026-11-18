@@ -1,6 +1,11 @@
 import { cacheLife } from "next/cache";
 import { TWITCH_LOGIN, YOUTUBE_CHANNEL_ID } from "@/config/canais";
 
+/** Por quantos minutos depois do início da live o cartão "Ao vivo" aparece. */
+export const LIVE_CARD_MINUTES = 90;
+/** Só mostra quantas pessoas estão assistindo a partir deste número. */
+export const MIN_VIEWERS_SHOWN = 10;
+
 export type LatestVideo = { id: string; title: string; url: string; thumb: string };
 export type LiveStream = { title: string; game: string | null; url: string; thumb: string; viewers: number };
 
@@ -84,6 +89,9 @@ export async function getLiveStream(): Promise<LiveStream | null> {
     };
     const s = data.data?.[0];
     if (!s || s.type !== "live") return null;
+    // O cartão fica só na primeira 1h30 da live; depois some (e o último vídeo volta).
+    const started = s.started_at ? Date.parse(s.started_at) : NaN;
+    if (Number.isFinite(started) && Date.now() - started > LIVE_CARD_MINUTES * 60_000) return null;
     // A imagem da live muda a cada poucos minutos; o "?t=" evita a versão antiga guardada.
     const stamp = Math.floor(Date.now() / 300000);
     return {

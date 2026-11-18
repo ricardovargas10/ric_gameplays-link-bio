@@ -25,10 +25,9 @@ async function currentYear() {
 /** A página inteira, com os textos, botões e redes salvos no painel. */
 async function Content() {
   const [content, year] = await Promise.all([getPublicContent(), currentYear()]);
-  const [live, video] = await Promise.all([
-    content.page.autoLive ? getLiveStream() : Promise.resolve(null),
-    content.page.autoVideo ? getLatestVideo() : Promise.resolve(null),
-  ]);
+  const live = content.page.autoLive ? await getLiveStream() : null;
+  // Durante a live (no cartão), o último vídeo fica escondido para não confundir; volta quando o cartão some.
+  const video = !live && content.page.autoVideo ? await getLatestVideo() : null;
   return <PageView content={content} year={year} live={live} video={video} />;
 }
 

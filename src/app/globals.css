@@ -136,7 +136,7 @@ a.lk:focus-visible { box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px #291d29; }
 }
 .live-card {
   isolation: isolate;
-  background: conic-gradient(from var(--live-angle), #ffffff 0deg, #ff3b5c 60deg, #9146ff 140deg, #ffffff 200deg, #ff3b5c 260deg, #9146ff 320deg, #ffffff 360deg);
+  background: conic-gradient(from var(--live-angle), #9146ff 0deg, #ff3bd4 70deg, #ffb347 130deg, #9146ff 180deg, #ff3bd4 250deg, #ffb347 310deg, #9146ff 360deg);
   animation: live-spin 3.2s linear infinite;
   transition: transform 160ms ease;
 }
@@ -146,8 +146,8 @@ a.lk:focus-visible { box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px #291d29; }
   z-index: -1;
   border-radius: 22px;
   background: inherit;
-  filter: blur(14px);
-  opacity: 0.85;
+  filter: blur(16px);
+  opacity: 0.95;
 }
 a.live-card:hover { transform: translateY(-2px); }
 a.live-card:active { transform: translateY(1px); }

@@ -1,5 +1,5 @@
 import { IconChevronRight } from "@tabler/icons-react";
-import type { LiveStream } from "@/lib/feeds";
+import { MIN_VIEWERS_SHOWN, type LiveStream } from "@/lib/feeds";
 import { externalLinkProps } from "@/lib/links";
 
 /** Cartão "Ao vivo agora": thumb da live com uma luz girando em volta do cartão (no lugar da sombra). */
@@ -15,7 +15,7 @@ export function LiveCard({ live }: { live: LiveStream }) {
             <span aria-hidden className="live-dot size-1.5 rounded-full bg-white" />
             Ao vivo
           </span>
-          {live.viewers > 0 ? (
+          {live.viewers >= MIN_VIEWERS_SHOWN ? (
             <span className="absolute top-3 right-3 rounded-full bg-black/60 px-2.5 py-1 text-[11.5px] leading-none font-semibold text-white">
               {live.viewers.toLocaleString("pt-BR")} assistindo
             </span>
