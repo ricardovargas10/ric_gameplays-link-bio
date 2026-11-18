@@ -23,7 +23,7 @@
   --color-warning: #8a5800;
   --color-warning-bg: #fdf0d5;
   --color-warning-text: #7a4e00;
-  --font-sans: "neue-haas-grotesk-display", "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans: "neue-haas-grotesk-display", var(--font-inter-tight), "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 html {

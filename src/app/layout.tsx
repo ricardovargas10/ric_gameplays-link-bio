@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import { Inter_Tight } from "next/font/google";
 import "./globals.css";
+
+// Reserva com o mesmo desenho do redesign, enquanto a Neue Haas (Adobe Fonts) não carrega.
+const interTight = Inter_Tight({ variable: "--font-inter-tight", subsets: ["latin"], display: "swap" });
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
@@ -25,7 +29,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className="h-full antialiased">
+    <html lang="pt-BR" className={`${interTight.variable} h-full antialiased`}>
       {process.env.NEXT_PUBLIC_ADOBE_FONTS_ID ? (
         <head>
           <link rel="stylesheet" href={`https://use.typekit.net/${process.env.NEXT_PUBLIC_ADOBE_FONTS_ID}.css`} />
