@@ -32,7 +32,7 @@ export function AdminNav({ logout }: { logout: () => Promise<void> }) {
               key={t.href}
               href={t.href}
               aria-current={active ? "page" : undefined}
-              className={`flex min-h-10 items-center rounded-full px-4 text-[15px] font-semibold ${active ? "bg-raisin text-shell" : "text-raisin"}`}
+              className={`flex min-h-10 items-center rounded-full px-4 text-[15px] font-semibold ${active ? "bg-raisin text-cream" : "text-raisin"}`}
             >
               {t.label}
             </Link>

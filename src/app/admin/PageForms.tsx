@@ -19,7 +19,7 @@ export function TextsForm({ initial }: { initial: PageData }) {
     <form action={formAction} className="flex flex-col gap-6" noValidate>
       <FormAlert error={state.error} ok={state.ok ? "Textos salvos. A página já foi atualizada." : null} />
 
-      <div className="rounded-3xl border-2 border-raisin/10 bg-shell px-4 py-5 text-center">
+      <div className="rounded-3xl border-2 border-raisin/10 bg-cream px-4 py-5 text-center">
         <p className="text-[22px] leading-[1.2] font-extrabold tracking-[-0.03em] text-balance">
           {before}
           {hl ? <Highlight>{hl}</Highlight> : null}
@@ -83,7 +83,7 @@ export function LogoForm({ logoMediaId, resetAction }: { logoMediaId: string | n
     <div className="flex flex-col gap-4">
       <form action={formAction} className="flex flex-col gap-4" noValidate>
         <FormAlert error={fileError ?? state.error} ok={state.ok && !fileUrl ? "Logo salvo. A página já foi atualizada." : null} />
-        <div className="flex min-h-28 items-center justify-center rounded-3xl border-2 border-raisin/10 bg-shell p-5">
+        <div className="flex min-h-28 items-center justify-center rounded-3xl border-2 border-raisin/10 bg-cream p-5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={current} alt="Logo atual" className="max-h-20 w-auto max-w-[220px] object-contain" />
         </div>
@@ -109,7 +109,7 @@ export function LogoForm({ logoMediaId, resetAction }: { logoMediaId: string | n
           {fileUrl ? "Escolher outra imagem" : "Escolher imagem do logo"}
         </button>
         {fileUrl ? (
-          <SubmitButton pendingText="Salvando…" className="min-h-12 rounded-[18px] bg-raisin text-[16px] font-semibold text-shell disabled:opacity-70">
+          <SubmitButton pendingText="Salvando…" className="min-h-12 rounded-[18px] bg-raisin text-[16px] font-semibold text-cream disabled:opacity-70">
             Salvar este logo
           </SubmitButton>
         ) : null}

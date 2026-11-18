@@ -57,7 +57,7 @@ export type IconRef = z.infer<typeof iconSchema>;
 
 // ---------- Botões ----------
 
-export const BUTTON_STYLES = ["white", "orange", "blue", "lilac", "purple"] as const;
+export const BUTTON_STYLES = ["white", "orange", "blue", "lilac", "purple", "featured"] as const;
 export type ButtonStyle = (typeof BUTTON_STYLES)[number];
 export const STYLE_LABELS: Record<ButtonStyle, string> = {
   white: "Branco",
@@ -65,6 +65,7 @@ export const STYLE_LABELS: Record<ButtonStyle, string> = {
   blue: "Azul",
   lilac: "Lilás",
   purple: "Roxo",
+  featured: "Destaque com thumb",
 };
 
 export const ANIMATIONS = ["none", "shine", "pulse", "both"] as const;

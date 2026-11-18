@@ -39,6 +39,7 @@ const SWATCH: Record<ButtonStyle, string> = {
   blue: "bg-sky",
   lilac: "bg-lilac",
   purple: "bg-raisin",
+  featured: "bg-raisin ring-2 ring-sunset",
 };
 
 const choiceTile =
@@ -58,7 +59,7 @@ export function ButtonForm({ base, initial, maxPosition }: { base: string; initi
       {initial.id ? <input type="hidden" name="id" value={initial.id} /> : null}
       <FormAlert error={state.error} />
 
-      <div className="sticky top-0 z-20 -mx-4 border-b border-raisin/10 bg-shell/95 px-4 pt-3 pb-5 backdrop-blur">
+      <div className="sticky top-0 z-20 -mx-4 border-b border-raisin/10 bg-cream/95 px-4 pt-3 pb-5 backdrop-blur">
         <p className="mb-4 text-[13px] font-semibold tracking-wide text-raisin/70 uppercase">Como vai ficar</p>
         <LinkCard
           preview

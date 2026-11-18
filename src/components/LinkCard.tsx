@@ -12,7 +12,8 @@ const STYLES: Record<ButtonStyle, { body: string; icon: string; ring: string; sh
   orange: { body: "bg-sunset text-raisin", icon: "text-raisin", ring: "border-sunset", shine: "" },
   blue: { body: "bg-sky text-raisin", icon: "text-raisin", ring: "border-sky", shine: "" },
   lilac: { body: "bg-lilac text-raisin", icon: "text-raisin", ring: "border-lilac", shine: "" },
-  purple: { body: "bg-raisin text-shell", icon: "text-sunset", ring: "border-raisin", shine: "" },
+  purple: { body: "bg-raisin text-cream", icon: "text-sunset", ring: "border-raisin", shine: "" },
+  featured: { body: "", icon: "", ring: "border-white", shine: "" },
 };
 
 export type LinkCardProps = {
@@ -35,6 +36,37 @@ export function LinkCard({ id, label, subtitle, badge, url, icon, style, animati
   const shine = animation === "shine" || animation === "both";
   const pulse = animation === "pulse" || animation === "both";
   const hasIcon = icon.type !== "none" || !!iconPreviewSrc;
+
+  if (style === "featured") {
+    const thumb = iconPreviewSrc ?? (icon.type === "custom" ? `/media/${icon.mediaId}` : null);
+    const card = (
+      <>
+        {pulse ? <span aria-hidden className={`promo-ring ${s.ring}`} /> : null}
+        <span className="promo-body overflow-hidden rounded-[20px] bg-raisin text-left text-white sm:rounded-[22px]">
+          {shine ? <span aria-hidden className="promo-shine" /> : null}
+          {thumb ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={thumb} alt="" className="aspect-video w-full object-cover" />
+          ) : (
+            <span className="flex aspect-video w-full items-center justify-center bg-white/10 text-[13px] opacity-70">Envie a thumb no campo do ícone</span>
+          )}
+          <span className="flex w-full flex-col px-4 py-3">
+            <span className="text-[15px] leading-snug font-semibold break-words sm:text-[16px]">{label || "Texto do botão"}</span>
+            {subtitle ? <span className="mt-0.5 text-[13px] leading-snug break-words opacity-80 sm:text-[14px]">{subtitle}</span> : null}
+          </span>
+        </span>
+        {badge ? (
+          <span className="absolute -top-3 right-5 z-10 rotate-2 rounded-full border-2 border-raisin bg-cream px-3 py-0.5 text-[11px] leading-5 font-bold tracking-wide text-raisin uppercase sm:text-[12px]">{badge}</span>
+        ) : null}
+      </>
+    );
+    if (preview) return <div className="promo group">{card}</div>;
+    return (
+      <a href={url} {...externalLinkProps(url)} data-track={id} className="promo group">
+        {card}
+      </a>
+    );
+  }
 
   const inner = (
     <>
@@ -60,7 +92,7 @@ export function LinkCard({ id, label, subtitle, badge, url, icon, style, animati
         ) : null}
       </span>
       {badge ? (
-        <span className="absolute -top-3 right-5 z-10 rotate-2 rounded-full border-2 border-raisin bg-shell px-3 py-0.5 text-[11px] leading-5 font-bold tracking-wide text-raisin uppercase sm:text-[12px]">
+        <span className="absolute -top-3 right-5 z-10 rotate-2 rounded-full border-2 border-raisin bg-cream px-3 py-0.5 text-[11px] leading-5 font-bold tracking-wide text-raisin uppercase sm:text-[12px]">
           {badge}
         </span>
       ) : null}

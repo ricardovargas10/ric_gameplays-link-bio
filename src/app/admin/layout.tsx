@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function AdminLayout({ children }: LayoutProps<"/admin">) {
   return (
-    <div className="min-h-dvh bg-shell text-raisin">
+    <div className="min-h-dvh bg-cream text-raisin" style={{ fontFamily: "var(--font-bricolage), system-ui, sans-serif" }}>
       <div className="mx-auto w-full max-w-xl px-4 pt-6 pb-16">
         <Suspense fallback={null}>
           <AdminNav logout={logoutAction} />

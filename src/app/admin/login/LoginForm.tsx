@@ -42,7 +42,7 @@ export function LoginForm() {
       </label>
       <SubmitButton
         pendingText="Entrando…"
-        className="mt-2 min-h-14 rounded-[20px] bg-raisin text-[17px] font-semibold text-shell disabled:opacity-70"
+        className="mt-2 min-h-14 rounded-[20px] bg-raisin text-[17px] font-semibold text-cream disabled:opacity-70"
       >
         Entrar
       </SubmitButton>

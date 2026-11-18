@@ -44,7 +44,7 @@ export default async function SocialsPage() {
             return (
               <li key={s.id} className="rounded-3xl border-2 border-raisin/10 bg-white/80 p-4">
                 <div className="flex items-center gap-3">
-                  <span className={`flex size-12 shrink-0 items-center justify-center rounded-full bg-shell ${s.visible ? "" : "opacity-40"}`}>
+                  <span className={`flex size-12 shrink-0 items-center justify-center rounded-full bg-cream ${s.visible ? "" : "opacity-40"}`}>
                     <BrandIcon icon={s.icon} className="size-[26px]" />
                   </span>
                   <div className="min-w-0 flex-1">

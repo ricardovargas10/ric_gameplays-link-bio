@@ -10,7 +10,7 @@ export default function AdminError({ reset }: { error: Error; reset: () => void 
       <button
         type="button"
         onClick={() => reset()}
-        className="mt-5 min-h-12 rounded-2xl bg-raisin px-6 font-semibold text-shell"
+        className="mt-5 min-h-12 rounded-2xl bg-raisin px-6 font-semibold text-cream"
       >
         Tentar de novo
       </button>

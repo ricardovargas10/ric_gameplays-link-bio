@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { cacheLife } from "next/cache";
-import { Highlight } from "@/components/Highlight";
 import { LinkCard } from "@/components/LinkCard";
 import { SocialRow } from "@/components/SocialRow";
 import { ClickTracker } from "@/components/ClickTracker";
@@ -8,7 +7,6 @@ import { BrandBackground } from "@/components/BrandBackground";
 import { getPublicContent } from "@/lib/content";
 import {
   renderFooter,
-  splitHeadline,
   type PublicContentShape,
 } from "@/lib/content-types";
 import { spYear } from "@/lib/time";
@@ -28,7 +26,6 @@ async function Content() {
 
 function PageView({ content, year }: { content: PublicContentShape; year: number }) {
   const { page, buttons, socials } = content;
-  const [before, highlight, after] = splitHeadline(page.headline, page.highlight);
 
   return (
     <>
@@ -48,16 +45,14 @@ function PageView({ content, year }: { content: PublicContentShape; year: number
 
       {page.headline ? (
         <p className="text-[22px] leading-[1.2] font-bold text-balance text-white sm:text-[30px]">
-          {before}
-          {highlight ? <Highlight>{highlight}</Highlight> : null}
-          {after}
+          {page.headline}
         </p>
       ) : null}
 
       <div className="flex flex-col gap-5">
         {buttons.length > 0 ? (
           <nav aria-label="Links" className="flex flex-col gap-3 text-left">
-            {buttons.map((b) => (
+            {[...buttons].sort((a, b) => Number(b.style === "featured") - Number(a.style === "featured")).map((b) => (
               <LinkCard
                 key={b.id}
                 id={b.id}
