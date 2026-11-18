@@ -24,6 +24,9 @@ const KEYS = {
   socials: "ric:socials",
   page: "ric:page",
   clicks: "ric:clicks",
+  visits: "ric:visits", // total e por dia (d:AAAA-MM-DD)
+  visitors: "ric:visitors", // pessoas únicas (HyperLogLog)
+  visitorsDay: (day: string) => `ric:visitors:${day}`,
   oldSettings: "ric:settings", // versão anterior: só o link do formulário
   media: (id: string) => `ric:media:${id}`,
 };
@@ -222,4 +225,59 @@ export async function getPublicContent(): Promise<PublicContent> {
 export async function getClickableIds(): Promise<Set<string>> {
   const { buttons, socials } = await getPublicContent();
   return new Set([...buttons.map((b) => b.id), ...socials.map((s) => s.id)]);
+}
+
+// ---------- visitas à página (quem abriu o link da bio) ----------
+
+/** Dia no horário de Brasília, AAAA-MM-DD. */
+export function spDay(date = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+}
+
+const gv = globalThis as unknown as { __ricVisits?: { total: number; days: Map<string, number>; people: Set<string>; peopleDay: Map<string, Set<string>> } };
+const memoryVisits = (gv.__ricVisits ??= { total: 0, days: new Map(), people: new Set(), peopleDay: new Map() });
+
+/** Soma uma visita. "visitor" é um código aleatório do navegador (nada pessoal). */
+export async function addVisit(visitor: string, newSession: boolean): Promise<void> {
+  const day = spDay();
+  if (redis) {
+    const ops: Promise<unknown>[] = [redis.pfadd(KEYS.visitors, visitor), redis.pfadd(KEYS.visitorsDay(day), visitor), redis.expire(KEYS.visitorsDay(day), 60 * 60 * 24 * 40)];
+    if (newSession) ops.push(redis.hincrby(KEYS.visits, "total", 1), redis.hincrby(KEYS.visits, `d:${day}`, 1));
+    await withTimeout(Promise.all(ops));
+    return;
+  }
+  if (!memoryFallback) return;
+  memoryVisits.people.add(visitor);
+  const set = memoryVisits.peopleDay.get(day) ?? new Set<string>();
+  set.add(visitor);
+  memoryVisits.peopleDay.set(day, set);
+  if (newSession) {
+    memoryVisits.total += 1;
+    memoryVisits.days.set(day, (memoryVisits.days.get(day) ?? 0) + 1);
+  }
+}
+
+export type VisitStats = { people: number; visits: number; peopleToday: number; visitsToday: number };
+
+export async function readVisits(): Promise<VisitStats | null> {
+  const day = spDay();
+  try {
+    if (redis) {
+      const [people, peopleToday, total, today] = await withTimeout(
+        Promise.all([redis.pfcount(KEYS.visitors), redis.pfcount(KEYS.visitorsDay(day)), redis.hget<number | string>(KEYS.visits, "total"), redis.hget<number | string>(KEYS.visits, `d:${day}`)]),
+      );
+      return { people: Number(people) || 0, peopleToday: Number(peopleToday) || 0, visits: Number(total) || 0, visitsToday: Number(today) || 0 };
+    }
+    if (memoryFallback) {
+      return {
+        people: memoryVisits.people.size,
+        peopleToday: memoryVisits.peopleDay.get(day)?.size ?? 0,
+        visits: memoryVisits.total,
+        visitsToday: memoryVisits.days.get(day) ?? 0,
+      };
+    }
+  } catch {
+    /* sem contador */
+  }
+  return null;
 }

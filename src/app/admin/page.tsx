@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Copy, Eye, EyeOff, MousePointerClick, Pencil, Plus } from "lucide-react";
 import { LinkCard } from "@/components/LinkCard";
 import { requireAdminPage } from "@/lib/session";
-import { readButtons, readClicks } from "@/lib/content";
+import { readButtons, readClicks, readVisits } from "@/lib/content";
 import { ANIMATION_LABELS, buttonStatus, type ButtonStatus, type LinkButtonData } from "@/lib/content-types";
 import { formatSp } from "@/lib/time";
 import { deleteButtonAction, duplicateButtonAction, toggleButtonAction } from "./actions";
@@ -28,9 +28,9 @@ function period(b: LinkButtonData): string | null {
 }
 
 async function load() {
-  const [buttons, clicks] = await Promise.all([readButtons(), readClicks()]);
+  const [buttons, clicks, visits] = await Promise.all([readButtons(), readClicks(), readVisits()]);
   const now = Date.now();
-  return { buttons: buttons.map((b) => ({ ...b, status: buttonStatus(b, now) })), clicks };
+  return { buttons: buttons.map((b) => ({ ...b, status: buttonStatus(b, now) })), clicks, visits };
 }
 
 type Row = Awaited<ReturnType<typeof load>>["buttons"][number];
@@ -106,6 +106,23 @@ export default async function ButtonsPage() {
 
   return (
     <div>
+      {data?.visits ? (
+        <section aria-label="Quem abriu o link da bio" className="mb-6 rounded-[18px] border border-admin-line bg-white p-4 shadow-[0_1px_2px_rgba(41,29,41,0.05)]">
+          <p className="text-[12px] font-bold tracking-[0.08em] text-admin-faint uppercase">Quem abriu o link da bio</p>
+          <div className="mt-2 grid grid-cols-2 gap-3">
+            <div>
+              <p className="text-[28px] leading-none font-bold tabular-nums">{data.visits.people.toLocaleString("pt-BR")}</p>
+              <p className="mt-1 text-[13.5px] text-admin-muted">pessoas no total · {data.visits.peopleToday.toLocaleString("pt-BR")} hoje</p>
+            </div>
+            <div>
+              <p className="text-[28px] leading-none font-bold tabular-nums">{data.visits.visits.toLocaleString("pt-BR")}</p>
+              <p className="mt-1 text-[13.5px] text-admin-muted">visitas no total · {data.visits.visitsToday.toLocaleString("pt-BR")} hoje</p>
+            </div>
+          </div>
+          <p className="mt-3 text-[12.5px] leading-snug text-admin-faint">Pessoas: cada celular ou computador conta uma vez. Visitas: cada vez que alguém abre a página.</p>
+        </section>
+      ) : null}
+
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="min-w-0 flex-1 basis-60">
           <h1 className="text-[24px] leading-tight font-bold">Botões</h1>
