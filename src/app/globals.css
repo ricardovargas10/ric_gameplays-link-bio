@@ -4,10 +4,10 @@
   --color-raisin: #291d29;
   --color-sunset: #c41a3b;
   --color-sky: #84d1eb;
-  --color-shell: #fff4f5;
+  --color-shell: #c41a3b;
   --color-lilac: #8b7cf6;
   --color-lilac-light: #d9ccff;
-  --font-sans: var(--font-bricolage), system-ui, sans-serif;
+  --font-sans: "neue-haas-grotesk-display", "Neue Haas Grotesk Display Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 html {
@@ -22,7 +22,7 @@ body {
 
 /* Foco visível para teclado */
 :focus-visible {
-  outline: 3px solid var(--color-sunset);
+  outline: 3px solid #ffffff;
   outline-offset: 3px;
 }
 

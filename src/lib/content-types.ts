@@ -205,13 +205,13 @@ export function renderFooter(footer: string, year: number): string {
 
 // ---------- Valores iniciais ----------
 
-const WHATSAPP_MESSAGE = "Olá! Vim pelo Instagram e vim pelo link da bio do Ric Gameplays.";
+const WHATSAPP_MESSAGE = "Olá! Vim pelo link da bio do Ric Gameplays.";
 const T0 = "2026-11-11T00:00:00.000Z";
 
 export const DEFAULT_PAGE: PageData = {
   logoMediaId: null,
-  headline: "O inglês começa aqui e leva você para onde você quiser",
-  highlight: "onde você quiser",
+  headline: "Bem-vindo ao Ric Gameplays",
+  highlight: "Ric Gameplays",
   aboutTitle: "Sobre o Ric",
   aboutText:
     "Gameplays, lives e muita resenha. Escreva aqui um texto sobre o canal.",

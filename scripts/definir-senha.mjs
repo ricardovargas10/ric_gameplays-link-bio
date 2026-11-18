@@ -19,7 +19,7 @@ function ask(question) {
   return queue.length ? Promise.resolve(queue.shift()) : new Promise((r) => waiting.push(r));
 }
 
-const username = (await ask("Usuário do painel (ex.: setup): ")).trim();
+const username = (await ask("Usuário do painel (ex.: ric): ")).trim();
 if (!/^[A-Za-z0-9._-]{3,40}$/.test(username)) {
   console.error("\nUsuário inválido: use de 3 a 40 letras, números, ponto, - ou _ (sem espaço e sem acento).");
   process.exit(1);

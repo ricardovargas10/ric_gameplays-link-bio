@@ -19,18 +19,18 @@ export default async function OpenGraphImage() {
           alignItems: "center",
           gap: 64,
           padding: "0 96px",
-          background: "#FFF4F5",
-          color: "#291D29",
+          background: "#C41A3B",
+          color: "#FFFFFF",
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} width={260} height={260} alt="" style={{ borderRadius: 48 }} />
         <div style={{ display: "flex", flexDirection: "column", maxWidth: 680 }}>
           <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>
-            Escola de inglês para brasileiros
+            @ric_gameplays
           </div>
           <div style={{ fontSize: 60, fontWeight: 800, lineHeight: 1.1, marginTop: 24, letterSpacing: -2 }}>
-            O inglês começa aqui e leva você para onde você quiser
+            Gameplays, lives e muita resenha.
           </div>
         </div>
       </div>

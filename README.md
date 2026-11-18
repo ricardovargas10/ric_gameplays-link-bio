@@ -1,4 +1,4 @@
-# Set Up | Página de links
+# Ric Gameplays | Página de links
 
 Página de links da bio do Instagram da Ric Gameplays (@ric_gameplays), com um painel privado para criar botões de promoção.
 
@@ -53,13 +53,13 @@ node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 1. **Importar o repositório:** em vercel.com → *Add New → Project* → escolha este repositório. O `vercel.json` já define o framework como Next.js.
 2. **Banco (Upstash Redis):** no projeto da Vercel → aba *Storage* (ou *Marketplace*) → *Upstash* → *Upstash for Redis* → plano gratuito → crie o banco e **conecte ao projeto** (marque Production, Preview e Development). A integração cria sozinha `KV_REST_API_URL`/`KV_REST_API_TOKEN` (ou `UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN`). O código aceita os dois nomes.
 3. **Variáveis:** nenhuma obrigatória além das do banco, que a integração cria sozinha.
-4. **Subdomínio (opcional):** *Settings → Domains → Add*, por exemplo `links.setupenglish.com.br`. No painel de DNS do domínio, crie um registro **CNAME** `links` → `cname.vercel-dns.com`. Se quiser, cadastre também `NEXT_PUBLIC_SITE_URL` com o endereço final (usado na imagem de compartilhamento).
+4. **Subdomínio (opcional):** *Settings → Domains → Add*, por exemplo `links.seudominio.com.br`. No painel de DNS do domínio, crie um registro **CNAME** `links` → `cname.vercel-dns.com`. Se quiser, cadastre também `NEXT_PUBLIC_SITE_URL` com o endereço final (usado na imagem de compartilhamento).
 
 ### Como funciona por dentro
 
 | Assunto | Onde |
 |---|---|
-| Conteúdo editável (botões, redes, textos, logo, cliques) | `src/lib/content.ts`, `src/lib/content-types.ts` (chaves `setup:buttons`, `setup:socials`, `setup:page`, `setup:media:*`, `setup:clicks`) |
+| Conteúdo editável (botões, redes, textos, logo, cliques) | `src/lib/content.ts`, `src/lib/content-types.ts` (chaves `ric:buttons`, `ric:socials`, `ric:page`, `ric:media:*`, `ric:clicks`) |
 | Ícones da biblioteca | `src/lib/icon-names.ts`, `src/components/BrandIcon.tsx` (Tabler Icons) |
 | Página pública | `src/app/page.tsx` (conteúdo em cache, refeito a cada 60 s ou na hora em que o painel salva) |
 | Botão, estilos e animações | `src/components/LinkCard.tsx` e `src/app/globals.css` |

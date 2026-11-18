@@ -38,16 +38,16 @@ function PageView({ content, year }: { content: PublicContentShape; year: number
           <img
             src={`/media/${page.logoMediaId}`}
             alt="Ric Gameplays"
-            className="h-auto max-h-24 w-[130px] object-contain sm:w-[190px]"
+            className="h-auto max-h-24 w-[130px] rounded-[28px] object-contain sm:w-[190px]"
             fetchPriority="high"
           />
         ) : (
-          <Image src={logo} alt="Ric Gameplays" priority sizes="190px" className="h-auto w-[130px] sm:w-[190px]" />
+          <Image src={logo} alt="Ric Gameplays" priority sizes="190px" className="h-auto w-[130px] rounded-[28px] sm:w-[190px]" />
         )}
       </div>
 
       {page.headline ? (
-        <p className="text-[22px] leading-[1.2] font-extrabold tracking-[-0.03em] text-balance sm:text-[30px]">
+        <p className="text-[22px] leading-[1.2] font-bold text-balance text-white sm:text-[30px]">
           {before}
           {highlight ? <Highlight>{highlight}</Highlight> : null}
           {after}
@@ -78,19 +78,19 @@ function PageView({ content, year }: { content: PublicContentShape; year: number
       {page.aboutTitle || page.aboutText ? (
         <section aria-labelledby={page.aboutTitle ? "sobre" : undefined}>
           {page.aboutTitle ? (
-            <h2 id="sobre" className="text-[16px] font-extrabold tracking-[-0.02em] sm:text-[19px]">
+            <h2 id="sobre" className="text-[16px] font-bold text-white sm:text-[19px]">
               {page.aboutTitle}
             </h2>
           ) : null}
           {page.aboutText ? (
-            <p className="mx-auto mt-1.5 max-w-[400px] text-[13.5px] leading-relaxed whitespace-pre-line text-pretty text-raisin/85 sm:text-[15px]">
+            <p className="mx-auto mt-1.5 max-w-[400px] text-[13.5px] leading-relaxed whitespace-pre-line text-pretty text-white/90 sm:text-[15px]">
               {page.aboutText}
             </p>
           ) : null}
         </section>
       ) : null}
 
-      <footer className="text-center text-[12px] font-medium text-raisin/80 sm:text-[13px]">
+      <footer className="text-center text-[12px] font-medium text-white/85 sm:text-[13px]">
         {page.footer ? <p>{renderFooter(page.footer, year)}</p> : null}
       </footer>
     </>
