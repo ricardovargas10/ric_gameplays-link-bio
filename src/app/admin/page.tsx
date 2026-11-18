@@ -90,6 +90,7 @@ export default async function ButtonsPage() {
                   </div>
                 </div>
 
+                {b.gapBefore ? <p className="mt-2 text-[12px] font-medium text-raisin/60">↕ Espaço acima (novo grupo)</p> : null}
                 <div className={`mt-5 ${b.visible ? "" : "opacity-50"}`}>
                   <LinkCard preview label={b.label} subtitle={b.subtitle} badge={b.badge} url={b.url} icon={b.icon} style={b.style} colors={b.colors} animation={b.animation} />
                 </div>

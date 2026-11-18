@@ -209,6 +209,7 @@ export async function saveButtonAction(_prev: FormState, fd: FormData): Promise<
     animation: text(fd, "animation"),
     badge: text(fd, "badge"),
     visible: fd.get("visible") === "on",
+    gapBefore: fd.get("gapBefore") === "on",
     startsAt: startsAt ?? null,
     endsAt: endsAt ?? null,
     position: Number.parseInt(text(fd, "position"), 10) || 1000,

@@ -28,6 +28,7 @@ export type ButtonFormValues = {
   icon: IconRef;
   style: ButtonStyle;
   colors: ButtonColors;
+  gapBefore: boolean;
   animation: Animation;
   badge: string;
   visible: boolean;
@@ -151,6 +152,8 @@ export function ButtonForm({ base, initial, maxPosition }: { base: string; initi
       >
         <input id="badge" name="badge" value={v.badge} onChange={(e) => set("badge", e.target.value)} maxLength={LIMITS.badge} className={inputClass} />
       </Field>
+
+      <Toggle name="gapBefore" checked={v.gapBefore} onChange={(x) => set("gapBefore", x)} title="Espaço acima" description="Começa um novo grupo na página, com mais espaço antes deste botão." />
 
       <Toggle name="visible" checked={v.visible} onChange={(x) => set("visible", x)} title="Mostrar na página" description="Desligado, o botão fica oculto (não é apagado)." />
 

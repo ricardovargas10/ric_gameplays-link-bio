@@ -104,6 +104,8 @@ export const buttonSchema = z.object({
   icon: iconSchema,
   style: z.enum(BUTTON_STYLES),
   colors: colorsSchema.default(NO_COLORS),
+  /** Começa um novo bloco: espaço maior acima deste botão. */
+  gapBefore: z.boolean().default(false),
   animation: z.enum(ANIMATIONS),
   badge: z.string().max(LIMITS.badge).nullable(),
   visible: z.boolean(),
@@ -133,6 +135,7 @@ export const buttonInputSchema = z
     url: optionalUrlField,
     style: z.enum(BUTTON_STYLES, { error: "Escolha um estilo." }),
     colors: colorsSchema,
+    gapBefore: z.boolean(),
     animation: z.enum(ANIMATIONS, { error: "Escolha a animação." }),
     badge: optionalText(LIMITS.badge, "O selo"),
     visible: z.boolean(),
@@ -238,7 +241,7 @@ export const DEFAULT_PAGE: PageData = {
   footer: "@ric_gameplays · {ano}",
 };
 
-const base = { subtitle: null, style: "white", colors: NO_COLORS, animation: "none", badge: null, visible: true, startsAt: null, endsAt: null, createdAt: T0, updatedAt: T0 } as const;
+const base = { subtitle: null, style: "white", colors: NO_COLORS, gapBefore: false, animation: "none", badge: null, visible: true, startsAt: null, endsAt: null, createdAt: T0, updatedAt: T0 } as const;
 
 export function defaultButtons(formUrl = "https://www.google.com"): LinkButtonData[] {
   return [
@@ -278,8 +281,16 @@ export function buttonGroup(b: Pick<LinkButtonData, "style" | "animation" | "url
 }
 export const GROUP_LABELS = ["Botões com thumbnail", "Botões com animação", "Botões com link", "Botões sem link"] as const;
 
-export function groupButtons<T extends Pick<LinkButtonData, "style" | "animation" | "url">>(list: T[]): T[][] {
+export function groupButtons<T extends Pick<LinkButtonData, "style" | "animation" | "url" | "gapBefore">>(list: T[]): T[][] {
   const groups: T[][] = [[], [], [], []];
   for (const b of list) groups[buttonGroup(b)].push(b);
-  return groups.filter((g) => g.length > 0);
+  // Dentro de cada bloco, "Espaço acima" abre um bloco novo.
+  const out: T[][] = [];
+  for (const g of groups) {
+    for (const b of g) {
+      if (out.length === 0 || b === g[0] || b.gapBefore) out.push([b]);
+      else out[out.length - 1].push(b);
+    }
+  }
+  return out;
 }
