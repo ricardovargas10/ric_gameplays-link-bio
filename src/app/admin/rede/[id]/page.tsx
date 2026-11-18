@@ -18,12 +18,12 @@ export default async function SocialEditPage({ params }: PageProps<"/admin/rede/
     : { label: "YouTube", url: "", icon: { type: "lib", name: "youtube" }, visible: true };
 
   return (
-    <>
+    <div>
       <Link href={`${base}/redes`} className="text-[15px] font-semibold underline underline-offset-4">
         ← Voltar para as redes
       </Link>
-      <h1 className="mt-4 text-[28px] leading-tight font-extrabold tracking-[-0.03em]">{s ? "Editar rede" : "Nova rede"}</h1>
+      <h1 className="mt-4 text-[28px] leading-tight font-semibold">{s ? "Editar rede" : "Nova rede"}</h1>
       <SocialForm base={base} initial={initial} />
-    </>
+    </div>
   );
 }

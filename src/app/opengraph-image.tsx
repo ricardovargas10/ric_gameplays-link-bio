@@ -26,10 +26,10 @@ export default async function OpenGraphImage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} width={260} height={260} alt="" style={{ borderRadius: 48 }} />
         <div style={{ display: "flex", flexDirection: "column", maxWidth: 680 }}>
-          <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>
+          <div style={{ fontSize: 34, fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" }}>
             @ric_gameplays
           </div>
-          <div style={{ fontSize: 60, fontWeight: 800, lineHeight: 1.1, marginTop: 24, letterSpacing: -2 }}>
+          <div style={{ fontSize: 60, fontWeight: 400, lineHeight: 1.1, marginTop: 24, letterSpacing: 3 }}>
             Gameplays, lives e muita resenha.
           </div>
         </div>

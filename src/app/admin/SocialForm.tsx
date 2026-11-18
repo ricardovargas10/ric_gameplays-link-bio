@@ -26,7 +26,7 @@ export function SocialForm({ base, initial }: { base: string; initial: SocialFor
       <FormAlert error={state.error} />
 
       <div className="flex items-center gap-3 rounded-3xl border-2 border-raisin/10 bg-white/80 p-4">
-        <span className="flex size-12 items-center justify-center rounded-full bg-cream text-raisin">
+        <span className="flex size-12 items-center justify-center rounded-full bg-raisin/5 text-raisin">
           <BrandIcon icon={preview.icon} previewSrc={preview.src} className="size-[26px]" />
         </span>
         <span className="text-[15px] font-semibold">{v.label || "Nome da rede"}</span>
@@ -69,7 +69,7 @@ export function SocialForm({ base, initial }: { base: string; initial: SocialFor
       <Toggle name="visible" checked={v.visible} onChange={(x) => setV((o) => ({ ...o, visible: x }))} title="Mostrar na página" description="Desligado, o ícone fica oculto (não é apagado)." />
 
       <div className="mt-2 flex flex-col gap-3">
-        <SubmitButton pendingText="Salvando…" className="min-h-14 rounded-[20px] bg-sunset text-[17px] font-bold text-raisin disabled:opacity-70">
+        <SubmitButton pendingText="Salvando…" className="min-h-14 rounded-[20px] bg-raisin text-[17px] font-semibold text-white disabled:opacity-70">
           Salvar rede
         </SubmitButton>
         <Link href={`${base}/redes`} className="flex min-h-12 items-center justify-center rounded-[20px] text-[15px] font-semibold underline underline-offset-4">

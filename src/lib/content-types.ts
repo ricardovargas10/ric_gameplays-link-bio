@@ -46,6 +46,14 @@ const urlField = z
 const isoDate = z.string().refine((v) => !Number.isNaN(Date.parse(v)));
 const idField = z.string().regex(/^[a-z0-9-]{1,64}$/);
 
+/** Link opcional: vazio vira botão sem link. */
+const optionalUrlField = z
+  .string()
+  .trim()
+  .max(2000, { error: "Link muito longo." })
+  .transform((v) => (v === "" ? "" : normalizeUrl(v)))
+  .refine((v) => v === "" || isAllowedUrl(v), { error: "Link inválido. Use https://, wa.me/, mailto: ou tel:" });
+
 // ---------- Ícones ----------
 
 export const iconSchema = z.discriminatedUnion("type", [
@@ -79,13 +87,23 @@ export const ANIMATION_LABELS: Record<Animation, string> = {
 
 export const LIMITS = { label: 60, subtitle: 80, badge: 16, headline: 140, highlight: 60, aboutTitle: 60, aboutText: 600, footer: 80, socialLabel: 40 } as const;
 
+const hexColor = z.string().regex(/^#[0-9a-f]{6}$/i);
+export const colorsSchema = z.object({
+  bg: hexColor.nullable().default(null),
+  text: hexColor.nullable().default(null),
+  icon: hexColor.nullable().default(null),
+});
+export type ButtonColors = z.infer<typeof colorsSchema>;
+export const NO_COLORS: ButtonColors = { bg: null, text: null, icon: null };
+
 export const buttonSchema = z.object({
   id: idField,
   label: z.string().min(1).max(LIMITS.label),
   subtitle: z.string().max(LIMITS.subtitle).nullable(),
-  url: z.string().max(2000).refine(isAllowedUrl),
+  url: z.string().max(2000).refine((v) => v === "" || isAllowedUrl(v)),
   icon: iconSchema,
   style: z.enum(BUTTON_STYLES),
+  colors: colorsSchema.default(NO_COLORS),
   animation: z.enum(ANIMATIONS),
   badge: z.string().max(LIMITS.badge).nullable(),
   visible: z.boolean(),
@@ -112,8 +130,9 @@ export const buttonInputSchema = z
       .min(1, { error: "Escreva o texto do botão." })
       .max(LIMITS.label, { error: `O texto pode ter no máximo ${LIMITS.label} caracteres.` }),
     subtitle: optionalText(LIMITS.subtitle, "O subtítulo"),
-    url: urlField,
+    url: optionalUrlField,
     style: z.enum(BUTTON_STYLES, { error: "Escolha um estilo." }),
+    colors: colorsSchema,
     animation: z.enum(ANIMATIONS, { error: "Escolha a animação." }),
     badge: optionalText(LIMITS.badge, "O selo"),
     visible: z.boolean(),
@@ -219,7 +238,7 @@ export const DEFAULT_PAGE: PageData = {
   footer: "@ric_gameplays · {ano}",
 };
 
-const base = { subtitle: null, style: "white", animation: "none", badge: null, visible: true, startsAt: null, endsAt: null, createdAt: T0, updatedAt: T0 } as const;
+const base = { subtitle: null, style: "white", colors: NO_COLORS, animation: "none", badge: null, visible: true, startsAt: null, endsAt: null, createdAt: T0, updatedAt: T0 } as const;
 
 export function defaultButtons(formUrl = "https://www.google.com"): LinkButtonData[] {
   return [
@@ -246,3 +265,21 @@ export type PublicContentShape = {
   buttons: LinkButtonData[];
   socials: SocialData[];
 };
+
+/**
+ * Blocos invisíveis da página (com mais espaço entre eles):
+ * thumbnail → com animação → com link → sem link. Dentro de cada bloco vale a ordem do painel.
+ */
+export function buttonGroup(b: Pick<LinkButtonData, "style" | "animation" | "url">): number {
+  if (b.style === "featured") return 0;
+  if (b.animation !== "none") return 1;
+  if (b.url) return 2;
+  return 3;
+}
+export const GROUP_LABELS = ["Botões com thumbnail", "Botões com animação", "Botões com link", "Botões sem link"] as const;
+
+export function groupButtons<T extends Pick<LinkButtonData, "style" | "animation" | "url">>(list: T[]): T[][] {
+  const groups: T[][] = [[], [], [], []];
+  for (const b of list) groups[buttonGroup(b)].push(b);
+  return groups.filter((g) => g.length > 0);
+}

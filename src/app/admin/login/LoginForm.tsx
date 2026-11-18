@@ -13,7 +13,7 @@ export function LoginForm() {
   return (
     <form action={formAction} className="mt-8 flex flex-col gap-5" noValidate>
       {state.error ? (
-        <p role="alert" className="rounded-2xl bg-sunset/15 px-4 py-3 text-[15px] font-semibold">
+        <p role="alert" className="rounded-2xl bg-raisin/10 px-4 py-3 text-[15px] font-semibold">
           {state.error}
         </p>
       ) : null}
@@ -42,7 +42,7 @@ export function LoginForm() {
       </label>
       <SubmitButton
         pendingText="Entrando…"
-        className="mt-2 min-h-14 rounded-[20px] bg-raisin text-[17px] font-semibold text-cream disabled:opacity-70"
+        className="mt-2 min-h-14 rounded-[20px] bg-raisin text-[17px] font-semibold text-white disabled:opacity-70"
       >
         Entrar
       </SubmitButton>

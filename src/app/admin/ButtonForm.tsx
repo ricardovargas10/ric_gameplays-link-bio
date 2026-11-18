@@ -10,6 +10,7 @@ import {
   LIMITS,
   STYLE_LABELS,
   type Animation,
+  type ButtonColors,
   type ButtonStyle,
   type IconRef,
 } from "@/lib/content-types";
@@ -17,6 +18,7 @@ import { saveButtonAction, type FormState } from "./actions";
 import { Field, FormAlert, Toggle, inputClass } from "./fields";
 import { IconPicker, choiceToPreview, initialChoice } from "./IconPicker";
 import { SubmitButton } from "./ui";
+import { ColorField } from "./ColorField";
 
 export type ButtonFormValues = {
   id?: string;
@@ -25,6 +27,7 @@ export type ButtonFormValues = {
   url: string;
   icon: IconRef;
   style: ButtonStyle;
+  colors: ButtonColors;
   animation: Animation;
   badge: string;
   visible: boolean;
@@ -43,7 +46,7 @@ const SWATCH: Record<ButtonStyle, string> = {
 };
 
 const choiceTile =
-  "flex min-h-12 cursor-pointer items-center gap-2 rounded-2xl border-2 bg-white px-3 text-[15px] font-semibold has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-sunset";
+  "flex min-h-12 cursor-pointer items-center gap-2 rounded-2xl border-2 bg-white px-3 text-[15px] font-semibold has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-raisin";
 
 export function ButtonForm({ base, initial, maxPosition }: { base: string; initial: ButtonFormValues; maxPosition: number }) {
   const [state, formAction] = useActionState<FormState, FormData>(saveButtonAction, {});
@@ -59,7 +62,7 @@ export function ButtonForm({ base, initial, maxPosition }: { base: string; initi
       {initial.id ? <input type="hidden" name="id" value={initial.id} /> : null}
       <FormAlert error={state.error} />
 
-      <div className="sticky top-0 z-20 -mx-4 border-b border-raisin/10 bg-cream/95 px-4 pt-3 pb-5 backdrop-blur">
+      <div className="sticky top-0 z-20 -mx-4 border-b border-raisin/10 bg-white/95 px-4 pt-3 pb-5 backdrop-blur">
         <p className="mb-4 text-[13px] font-semibold tracking-wide text-raisin/70 uppercase">Como vai ficar</p>
         <LinkCard
           preview
@@ -70,6 +73,7 @@ export function ButtonForm({ base, initial, maxPosition }: { base: string; initi
           icon={preview.icon}
           iconPreviewSrc={preview.src}
           style={v.style}
+          colors={v.colors}
           animation={v.animation}
         />
       </div>
@@ -78,7 +82,7 @@ export function ButtonForm({ base, initial, maxPosition }: { base: string; initi
         <input id="label" name="label" value={v.label} onChange={(e) => set("label", e.target.value)} maxLength={LIMITS.label} aria-invalid={!!err.label} className={inputClass} />
       </Field>
 
-      <Field id="url" label="Link" hint="Comece com https://, wa.me/, mailto: ou tel:" error={err.url}>
+      <Field id="url" label="Link (opcional)" hint="Comece com https://, wa.me/, mailto: ou tel:. Sem link, o botão aparece só com nome e ícone." error={err.url}>
         <input
           id="url"
           name="url"
@@ -115,6 +119,10 @@ export function ButtonForm({ base, initial, maxPosition }: { base: string; initi
           ))}
         </div>
       </fieldset>
+
+      <ColorField name="colorBg" label="Cor de fundo do botão" value={v.colors.bg} onChange={(c) => setV((o) => ({ ...o, colors: { ...o.colors, bg: c } }))} />
+      <ColorField name="colorText" label="Cor do texto do botão" value={v.colors.text} onChange={(c) => setV((o) => ({ ...o, colors: { ...o.colors, text: c } }))} />
+      <ColorField name="colorIcon" label="Cor do ícone" value={v.colors.icon} onChange={(c) => setV((o) => ({ ...o, colors: { ...o.colors, icon: c } }))} />
 
       <fieldset>
         <legend className="text-[15px] font-semibold">Animação</legend>
@@ -174,7 +182,7 @@ export function ButtonForm({ base, initial, maxPosition }: { base: string; initi
       </Field>
 
       <div className="mt-2 flex flex-col gap-3">
-        <SubmitButton pendingText="Salvando…" className="min-h-14 rounded-[20px] bg-sunset text-[17px] font-bold text-raisin disabled:opacity-70">
+        <SubmitButton pendingText="Salvando…" className="min-h-14 rounded-[20px] bg-raisin text-[17px] font-semibold text-white disabled:opacity-70">
           Salvar botão
         </SubmitButton>
         <Link href={base} className="flex min-h-12 items-center justify-center rounded-[20px] text-[15px] font-semibold underline underline-offset-4">

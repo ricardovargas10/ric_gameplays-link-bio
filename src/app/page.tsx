@@ -7,6 +7,7 @@ import { BrandBackground } from "@/components/BrandBackground";
 import { getPublicContent } from "@/lib/content";
 import {
   renderFooter,
+  groupButtons,
   type PublicContentShape,
 } from "@/lib/content-types";
 import { spYear } from "@/lib/time";
@@ -44,15 +45,15 @@ function PageView({ content, year }: { content: PublicContentShape; year: number
       </div>
 
       {page.headline ? (
-        <p className="text-[22px] leading-[1.2] font-bold text-balance text-white sm:text-[30px]">
+        <p className="text-[22px] leading-[1.2] font-normal tracking-[0.05em] text-balance text-white sm:text-[30px]">
           {page.headline}
         </p>
       ) : null}
 
-      <div className="flex flex-col gap-5">
-        {buttons.length > 0 ? (
-          <nav aria-label="Links" className="flex flex-col gap-3 text-left">
-            {[...buttons].sort((a, b) => Number(b.style === "featured") - Number(a.style === "featured")).map((b) => (
+      <div className="flex flex-col gap-10">
+        {groupButtons(buttons).map((group, gi) => (
+          <nav key={gi} aria-label="Links" className="flex flex-col gap-3 text-left">
+            {group.map((b) => (
               <LinkCard
                 key={b.id}
                 id={b.id}
@@ -62,18 +63,19 @@ function PageView({ content, year }: { content: PublicContentShape; year: number
                 url={b.url}
                 icon={b.icon}
                 style={b.style}
+                colors={b.colors}
                 animation={b.animation}
               />
             ))}
           </nav>
-        ) : null}
+        ))}
         <SocialRow socials={socials} />
       </div>
 
       {page.aboutTitle || page.aboutText ? (
         <section aria-labelledby={page.aboutTitle ? "sobre" : undefined}>
           {page.aboutTitle ? (
-            <h2 id="sobre" className="text-[16px] font-bold text-white sm:text-[19px]">
+            <h2 id="sobre" className="text-[16px] font-semibold text-white sm:text-[19px]">
               {page.aboutTitle}
             </h2>
           ) : null}

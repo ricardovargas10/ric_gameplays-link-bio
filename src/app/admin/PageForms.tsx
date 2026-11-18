@@ -1,8 +1,7 @@
 "use client";
 
 import { useActionState, useRef, useState } from "react";
-import { Highlight } from "@/components/Highlight";
-import { LIMITS, renderFooter, splitHeadline, type PageData } from "@/lib/content-types";
+import { LIMITS, renderFooter, type PageData } from "@/lib/content-types";
 import { saveLogoAction, savePageAction, type FormState } from "./actions";
 import { Field, FormAlert, inputClass } from "./fields";
 import { SubmitButton } from "./ui";
@@ -12,35 +11,20 @@ export function TextsForm({ initial }: { initial: PageData }) {
   const [v, setV] = useState(initial);
   const set = (k: keyof PageData, value: string) => setV((o) => ({ ...o, [k]: value }));
   const err = state.fieldErrors ?? {};
-  const [before, hl, after] = splitHeadline(v.headline, v.highlight);
-  const hlMissing = !!v.highlight.trim() && !v.headline.includes(v.highlight.trim());
 
   return (
     <form action={formAction} className="flex flex-col gap-6" noValidate>
       <FormAlert error={state.error} ok={state.ok ? "Textos salvos. A página já foi atualizada." : null} />
 
-      <div className="rounded-3xl border-2 border-raisin/10 bg-cream px-4 py-5 text-center">
-        <p className="text-[22px] leading-[1.2] font-extrabold tracking-[-0.03em] text-balance">
-          {before}
-          {hl ? <Highlight>{hl}</Highlight> : null}
-          {after}
-        </p>
+      <div className="rounded-3xl bg-sunset px-4 py-5 text-center">
+        <p className="text-[22px] leading-[1.2] font-normal tracking-[0.05em] text-balance text-white">{v.headline}</p>
       </div>
 
       <Field id="headline" label="Texto de cima" count={v.headline.length} max={LIMITS.headline} error={err.headline}>
         <textarea id="headline" name="headline" rows={2} value={v.headline} onChange={(e) => set("headline", e.target.value)} maxLength={LIMITS.headline} className={`${inputClass} py-3`} />
       </Field>
 
-      <Field
-        id="highlight"
-        label="Trecho na caixa azul"
-        hint="Copie aqui uma parte do texto de cima, igualzinha. Deixe vazio para não ter destaque."
-        count={v.highlight.length}
-        max={LIMITS.highlight}
-        error={err.highlight ?? (hlMissing ? "Esse trecho não está no texto de cima." : undefined)}
-      >
-        <input id="highlight" name="highlight" value={v.highlight} onChange={(e) => set("highlight", e.target.value)} maxLength={LIMITS.highlight} className={inputClass} />
-      </Field>
+      <input type="hidden" name="highlight" value="" />
 
       <Field id="aboutTitle" label="Título do texto de baixo" count={v.aboutTitle.length} max={LIMITS.aboutTitle} error={err.aboutTitle}>
         <input id="aboutTitle" name="aboutTitle" value={v.aboutTitle} onChange={(e) => set("aboutTitle", e.target.value)} maxLength={LIMITS.aboutTitle} className={inputClass} />
@@ -61,7 +45,7 @@ export function TextsForm({ initial }: { initial: PageData }) {
         <input id="footer" name="footer" value={v.footer} onChange={(e) => set("footer", e.target.value)} maxLength={LIMITS.footer} className={inputClass} />
       </Field>
 
-      <SubmitButton pendingText="Salvando…" className="min-h-14 rounded-[20px] bg-sunset text-[17px] font-bold text-raisin disabled:opacity-70">
+      <SubmitButton pendingText="Salvando…" className="min-h-14 rounded-[20px] bg-raisin text-[17px] font-semibold text-white disabled:opacity-70">
         Salvar textos
       </SubmitButton>
     </form>
@@ -83,7 +67,7 @@ export function LogoForm({ logoMediaId, resetAction }: { logoMediaId: string | n
     <div className="flex flex-col gap-4">
       <form action={formAction} className="flex flex-col gap-4" noValidate>
         <FormAlert error={fileError ?? state.error} ok={state.ok && !fileUrl ? "Logo salvo. A página já foi atualizada." : null} />
-        <div className="flex min-h-28 items-center justify-center rounded-3xl border-2 border-raisin/10 bg-cream p-5">
+        <div className="flex min-h-28 items-center justify-center rounded-3xl border-2 border-raisin/10 bg-raisin/5 p-5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={current} alt="Logo atual" className="max-h-20 w-auto max-w-[220px] object-contain" />
         </div>
@@ -109,7 +93,7 @@ export function LogoForm({ logoMediaId, resetAction }: { logoMediaId: string | n
           {fileUrl ? "Escolher outra imagem" : "Escolher imagem do logo"}
         </button>
         {fileUrl ? (
-          <SubmitButton pendingText="Salvando…" className="min-h-12 rounded-[18px] bg-raisin text-[16px] font-semibold text-cream disabled:opacity-70">
+          <SubmitButton pendingText="Salvando…" className="min-h-12 rounded-[18px] bg-raisin text-[16px] font-semibold text-white disabled:opacity-70">
             Salvar este logo
           </SubmitButton>
         ) : null}

@@ -83,7 +83,7 @@ export function IconPicker({
           const c = `lib:${name}`;
           return (
             <button key={name} type="button" aria-pressed={choice === c} onClick={() => pick(c)} className={`${tile} ${sel(c)}`}>
-              <C className="size-6 text-sunset" stroke={2} aria-hidden />
+              <C className="size-6 text-raisin" stroke={2} aria-hidden />
               {ICON_LABELS[name]}
             </button>
           );
@@ -105,7 +105,7 @@ export function IconPicker({
             // eslint-disable-next-line @next/next/no-img-element
             <img src={fileUrl} alt="" className="size-6 rounded object-contain" />
           ) : (
-            <span className="flex size-6 items-center justify-center text-[20px] text-sunset">＋</span>
+            <span className="flex size-6 items-center justify-center text-[20px] text-raisin">＋</span>
           )}
           {fileUrl ? "Imagem nova" : "Enviar imagem"}
         </button>

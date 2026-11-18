@@ -30,7 +30,7 @@ export function Field({
           {label}
         </label>
         {max !== undefined ? (
-          <span className={`text-[13px] tabular-nums ${(count ?? 0) > max ? "font-bold text-[#B3261E]" : "text-raisin/70"}`}>
+          <span className={`text-[13px] tabular-nums ${(count ?? 0) > max ? "font-semibold text-[#B3261E]" : "text-raisin/70"}`}>
             {count}/{max}
           </span>
         ) : null}
@@ -65,13 +65,13 @@ export function Toggle({
   description: string;
 }) {
   return (
-    <label className="flex min-h-14 cursor-pointer items-center justify-between gap-4 rounded-2xl border-2 border-raisin/15 bg-white px-4 has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-sunset">
+    <label className="flex min-h-14 cursor-pointer items-center justify-between gap-4 rounded-2xl border-2 border-raisin/15 bg-white px-4 has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-raisin">
       <span>
         <span className="block text-[15px] font-semibold">{title}</span>
         <span className="block text-[13px] text-raisin/70">{description}</span>
       </span>
       <input type="checkbox" name={name} checked={checked} onChange={(e) => onChange(e.target.checked)} className="sr-only" />
-      <span aria-hidden className={`relative block h-7 w-12 shrink-0 rounded-full transition-colors ${checked ? "bg-sunset" : "bg-raisin/20"}`}>
+      <span aria-hidden className={`relative block h-7 w-12 shrink-0 rounded-full transition-colors ${checked ? "bg-raisin" : "bg-raisin/20"}`}>
         <span
           className={`absolute top-1 left-1 size-5 rounded-full bg-white transition-transform ${checked ? "translate-x-5" : "translate-x-0"}`}
         />
@@ -83,7 +83,7 @@ export function Toggle({
 export function FormAlert({ error, ok }: { error?: string; ok?: string | null }) {
   if (error) {
     return (
-      <p role="alert" className="rounded-2xl bg-sunset/15 px-4 py-3 text-[15px] font-semibold">
+      <p role="alert" className="rounded-2xl bg-raisin/10 px-4 py-3 text-[15px] font-semibold">
         {error}
       </p>
     );

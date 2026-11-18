@@ -24,6 +24,7 @@ export default async function ButtonEditPage({ params }: PageProps<"/admin/botao
         url: b.url,
         icon: b.icon,
         style: b.style,
+        colors: b.colors,
         animation: b.animation,
         badge: b.badge ?? "",
         visible: b.visible,
@@ -37,6 +38,7 @@ export default async function ButtonEditPage({ params }: PageProps<"/admin/botao
         url: "",
         icon: { type: "lib", name: "link" },
         style: "white",
+        colors: { bg: null, text: null, icon: null },
         animation: "none",
         badge: "",
         visible: true,
@@ -46,12 +48,12 @@ export default async function ButtonEditPage({ params }: PageProps<"/admin/botao
       };
 
   return (
-    <>
+    <div>
       <Link href={base} className="text-[15px] font-semibold underline underline-offset-4">
         ← Voltar para os botões
       </Link>
-      <h1 className="mt-4 text-[28px] leading-tight font-extrabold tracking-[-0.03em]">{b ? "Editar botão" : "Novo botão"}</h1>
+      <h1 className="mt-4 text-[28px] leading-tight font-semibold">{b ? "Editar botão" : "Novo botão"}</h1>
       <ButtonForm base={base} initial={initial} maxPosition={isNew ? list.length + 1 : list.length} />
-    </>
+    </div>
   );
 }

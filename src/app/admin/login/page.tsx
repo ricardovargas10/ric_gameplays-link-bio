@@ -15,7 +15,7 @@ export default async function LoginPage() {
 
   return (
     <div className="mx-auto max-w-sm pt-10">
-      <h1 className="text-[28px] leading-tight font-extrabold tracking-[-0.03em]">Entrar no painel</h1>
+      <h1 className="text-[28px] leading-tight font-semibold">Entrar no painel</h1>
       <p className="mt-2 text-[15px]">Use o usuário e a senha que você recebeu.</p>
       <LoginForm />
     </div>

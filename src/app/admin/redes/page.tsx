@@ -21,16 +21,16 @@ export default async function SocialsPage() {
   }
 
   return (
-    <>
-      <h1 className="text-[28px] leading-tight font-extrabold tracking-[-0.03em]">Redes</h1>
+    <div>
+      <h1 className="text-[28px] leading-tight font-semibold">Redes</h1>
       <p className="mt-1 text-[15px]">Ícones pequenos que aparecem lado a lado, embaixo dos botões.</p>
 
-      <Link href={`${base}/rede/nova`} className="mt-5 flex min-h-14 items-center justify-center gap-2 rounded-[20px] bg-sunset text-[17px] font-bold text-raisin">
+      <Link href={`${base}/rede/nova`} className="mt-5 flex min-h-14 items-center justify-center gap-2 rounded-[20px] bg-raisin text-[17px] font-semibold text-white">
         <Plus className="size-5" aria-hidden /> Nova rede
       </Link>
 
       {!data ? (
-        <p role="alert" className="mt-6 rounded-2xl bg-sunset/15 px-4 py-3 font-semibold">
+        <p role="alert" className="mt-6 rounded-2xl bg-raisin/10 px-4 py-3 font-semibold">
           Não consegui carregar as redes agora. Atualize a página em instantes.
         </p>
       ) : data.socials.length === 0 ? (
@@ -44,11 +44,11 @@ export default async function SocialsPage() {
             return (
               <li key={s.id} className="rounded-3xl border-2 border-raisin/10 bg-white/80 p-4">
                 <div className="flex items-center gap-3">
-                  <span className={`flex size-12 shrink-0 items-center justify-center rounded-full bg-cream ${s.visible ? "" : "opacity-40"}`}>
+                  <span className={`flex size-12 shrink-0 items-center justify-center rounded-full bg-raisin/5 ${s.visible ? "" : "opacity-40"}`}>
                     <BrandIcon icon={s.icon} className="size-[26px]" />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[16px] font-bold">
+                    <p className="text-[16px] font-semibold">
                       {s.label} {s.visible ? null : <span className="text-[13px] font-semibold text-raisin/60">(oculta)</span>}
                     </p>
                     <p className="truncate text-[13px] text-raisin/70">{s.url}</p>
@@ -90,6 +90,6 @@ export default async function SocialsPage() {
           })}
         </ol>
       )}
-    </>
+    </div>
   );
 }

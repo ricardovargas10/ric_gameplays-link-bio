@@ -201,6 +201,11 @@ export async function saveButtonAction(_prev: FormState, fd: FormData): Promise<
     subtitle: text(fd, "subtitle"),
     url: text(fd, "url"),
     style: text(fd, "style"),
+    colors: {
+      bg: text(fd, "colorBg") || null,
+      text: text(fd, "colorText") || null,
+      icon: text(fd, "colorIcon") || null,
+    },
     animation: text(fd, "animation"),
     badge: text(fd, "badge"),
     visible: fd.get("visible") === "on",
@@ -268,6 +273,16 @@ export async function moveButtonAction(id: string, direction: "up" | "down"): Pr
   const bid = idSchema.parse(id);
   const dir = dirSchema.parse(direction);
   await mutateButtons((list) => move(list, bid, dir));
+}
+
+/** Nova ordem completa vinda do arrastar no painel. */
+export async function reorderButtonsAction(ids: string[]): Promise<void> {
+  await requireAdmin();
+  const order = z.array(idSchema).max(500).parse(ids);
+  await mutateButtons((list) => {
+    const pos = new Map(order.map((id, i) => [id, i]));
+    return [...list].sort((a, b) => (pos.get(a.id) ?? 1e6) - (pos.get(b.id) ?? 1e6));
+  });
 }
 
 export async function duplicateButtonAction(id: string): Promise<void> {

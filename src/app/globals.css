@@ -18,6 +18,7 @@ html {
 }
 
 body {
+  letter-spacing: 0.05em;
   background-color: var(--color-shell);
 }
 
