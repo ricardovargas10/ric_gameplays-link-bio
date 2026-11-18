@@ -3,7 +3,7 @@
 import { useActionState, useRef, useState } from "react";
 import { LIMITS, renderFooter, type PageData } from "@/lib/content-types";
 import { saveLogoAction, savePageAction, type FormState } from "./actions";
-import { Field, FormAlert, inputClass } from "./fields";
+import { Field, FormAlert, Toggle, inputClass } from "./fields";
 import { SubmitButton } from "./ui";
 
 export function TextsForm({ initial }: { initial: PageData }) {
@@ -17,7 +17,7 @@ export function TextsForm({ initial }: { initial: PageData }) {
       <FormAlert error={state.error} ok={state.ok ? "Textos salvos. A página já foi atualizada." : null} />
 
       <div className="rounded-3xl bg-sunset px-4 py-5 text-center">
-        <p className="text-[22px] leading-[1.2] font-bold tracking-[0.05em] text-balance text-white">{v.headline}</p>
+        <p className="text-[22px] leading-[1.2] font-bold tracking-[0.01em] text-balance text-white">{v.headline}</p>
       </div>
 
       <Field id="headline" label="Texto de cima" count={v.headline.length} max={LIMITS.headline} error={err.headline}>
@@ -25,6 +25,21 @@ export function TextsForm({ initial }: { initial: PageData }) {
       </Field>
 
       <input type="hidden" name="highlight" value="" />
+
+      <Toggle
+        name="autoLive"
+        checked={v.autoLive}
+        onChange={(x) => setV((o) => ({ ...o, autoLive: x }))}
+        title="Cartão automático da live (Twitch)"
+        description="Quando você entra ao vivo, aparece no topo com a imagem da live. Some sozinho quando a live acaba."
+      />
+      <Toggle
+        name="autoVideo"
+        checked={v.autoVideo}
+        onChange={(x) => setV((o) => ({ ...o, autoVideo: x }))}
+        title="Cartão automático do último vídeo (YouTube)"
+        description="Mostra sozinho o vídeo mais novo do canal Ric Gameplays (sem Shorts), com a thumb."
+      />
 
       <Field id="aboutTitle" label="Título do texto de baixo" count={v.aboutTitle.length} max={LIMITS.aboutTitle} error={err.aboutTitle}>
         <input id="aboutTitle" name="aboutTitle" value={v.aboutTitle} onChange={(e) => set("aboutTitle", e.target.value)} maxLength={LIMITS.aboutTitle} className={inputClass} />

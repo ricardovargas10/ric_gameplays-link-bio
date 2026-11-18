@@ -193,10 +193,16 @@ export const pageSchema = z.object({
   aboutTitle: z.string().max(LIMITS.aboutTitle),
   aboutText: z.string().max(LIMITS.aboutText),
   footer: z.string().max(LIMITS.footer),
+  /** Cartão automático com o último vídeo longo do YouTube. */
+  autoVideo: z.boolean().default(true),
+  /** Cartão automático "Ao vivo agora" quando a live da Twitch está no ar. */
+  autoLive: z.boolean().default(true),
 });
 export type PageData = z.infer<typeof pageSchema>;
 
 export const pageInputSchema = z.object({
+  autoVideo: z.boolean(),
+  autoLive: z.boolean(),
   headline: z
     .string()
     .trim()
@@ -244,6 +250,8 @@ export const DEFAULT_PAGE: PageData = {
   aboutText:
     "Gameplays, lives e muita resenha. Escreva aqui um texto sobre o canal.",
   footer: "@ric_gameplays · {ano}",
+  autoVideo: true,
+  autoLive: true,
 };
 
 const base = { subtitle: null, style: "white", colors: NO_COLORS, gapBefore: false, groupTitle: null, half: false, animation: "none", badge: null, visible: true, startsAt: null, endsAt: null, createdAt: T0, updatedAt: T0 } as const;

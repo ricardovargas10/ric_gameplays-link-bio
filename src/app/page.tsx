@@ -2,6 +2,8 @@ import Image from "next/image";
 import { Suspense } from "react";
 import { cacheLife } from "next/cache";
 import { LinkCard } from "@/components/LinkCard";
+import { LiveCard } from "@/components/LiveCard";
+import { getLatestVideo, getLiveStream, type LatestVideo, type LiveStream } from "@/lib/feeds";
 import { SocialRow } from "@/components/SocialRow";
 import { ClickTracker } from "@/components/ClickTracker";
 import { BrandBackground } from "@/components/BrandBackground";
@@ -23,7 +25,11 @@ async function currentYear() {
 /** A página inteira, com os textos, botões e redes salvos no painel. */
 async function Content() {
   const [content, year] = await Promise.all([getPublicContent(), currentYear()]);
-  return <PageView content={content} year={year} />;
+  const [live, video] = await Promise.all([
+    content.page.autoLive ? getLiveStream() : Promise.resolve(null),
+    content.page.autoVideo ? getLatestVideo() : Promise.resolve(null),
+  ]);
+  return <PageView content={content} year={year} live={live} video={video} />;
 }
 
 type Btn = PublicContentShape["buttons"][number];
@@ -56,7 +62,7 @@ function Card({ b }: { b: Btn }) {
   );
 }
 
-function PageView({ content, year }: { content: PublicContentShape; year: number }) {
+function PageView({ content, year, live, video }: { content: PublicContentShape; year: number; live: LiveStream | null; video: LatestVideo | null }) {
   const { page, buttons, socials } = content;
   const groups = groupButtons(buttons);
 
@@ -76,6 +82,14 @@ function PageView({ content, year }: { content: PublicContentShape; year: number
       ) : null}
 
       <div className="mt-[30px] text-left">
+        {live || video ? (
+          <div className={`flex flex-col gap-4 ${groups.length ? "mb-[26px]" : ""}`}>
+            {live ? <LiveCard live={live} /> : null}
+            {video ? (
+              <LinkCard label="Assista meu último vídeo" subtitle={video.title} url={video.url} icon={{ type: "none" }} iconPreviewSrc={video.thumb} style="featured" animation="none" />
+            ) : null}
+          </div>
+        ) : null}
         {groups.map((g, gi) => (
           <nav key={gi} aria-label={g.title ?? "Links"} className={gi === 0 ? "" : "mt-[26px]"}>
             {g.title ? <p className="mb-2 text-[12px] font-bold tracking-[0.08em] text-white/75 uppercase">{g.title}</p> : null}

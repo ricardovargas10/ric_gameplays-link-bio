@@ -418,6 +418,8 @@ export async function deleteSocialAction(id: string): Promise<void> {
 export async function savePageAction(_prev: FormState, fd: FormData): Promise<FormState> {
   await requireAdmin();
   const parsed = pageInputSchema.safeParse({
+    autoVideo: fd.get("autoVideo") === "on",
+    autoLive: fd.get("autoLive") === "on",
     headline: text(fd, "headline"),
     highlight: text(fd, "highlight"),
     aboutTitle: text(fd, "aboutTitle"),
